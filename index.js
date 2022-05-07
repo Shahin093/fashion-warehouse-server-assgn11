@@ -45,6 +45,13 @@ async function run() {
             res.send(result);
         });
 
+        app.delete('/service/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await fashionCollection.deleteOne(query);
+            res.send(result);
+        });
+
         // update data 
         app.put('/service/:id', async (req, res) => {
             const id = JSON.parse(req.params.id);
