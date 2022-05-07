@@ -1,9 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-
-const app = express();
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const ObjectId = require('mongodb').ObjectId; const app = express();
 const port = process.env.PORT || 5000;
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 
 //Middleware
@@ -39,19 +38,28 @@ async function run() {
 
         });
 
+        // post
+        app.post('/services', async (req, res) => {
+            const newService = req.body;
+            const result = await fashionCollection.insertOne(newService);
+            res.send(result);
+        });
+
         // update data 
-        // app.put('/user/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const updatedUser = req.body;
-        //     const filter = _id.ObjectId(id);
-        //     const options = { upsert: true };
-        //     const updateDoc = {
-        //         name: updatedUser.name,
-        //         email: updatedUser.email
-        //     };
-        //     const result = await userCollection.updateOne(filter, updateDoc, options);
-        //     res.send(result);
-        // })
+        app.put('/service/:id', async (req, res) => {
+            const id = JSON.parse(req.params.id);
+            const updatedUser = req.body;
+            const filter = req.ObjectId(id);
+            const options = { upsert: true };
+            const updateDoc = {
+                quantity: updatedUser.quantity
+            };
+            console.log(updateDoc);
+            const result = await fashionCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        })
+
+
 
     } finally {
 
