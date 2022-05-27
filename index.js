@@ -46,6 +46,17 @@ async function run() {
             const result = await fashionCollection.insertOne(newService);
             res.send(result);
         });
+
+        app.get('/service/:email', async (req, res) => {
+            const email = req.params.email;
+            console.log(email);
+            const query = { email: email };
+            // const cursor = fashionCollection.find(query);
+            // const orders = await cursor.toArray();
+            res.send({ query });
+
+        });
+
         // Delete data 
         app.delete('/service/:id', async (req, res) => {
             const id = req.params.id;
@@ -59,12 +70,6 @@ async function run() {
             console.log(id);
             const updatedQuantity = req.body;
             console.log(updatedQuantity?.totalQuantity)
-            // const demo = updatedQuantity.totalQuantity;
-            // const filter = req.ObjectId("id");
-            // const options = { upsert: true };
-            // const updateDoc = {
-            //     name: updatedQuantity?.quantity,
-            // };
             const result = await fashionCollection.updateOne({
                 _id: ObjectId(id)
             },
